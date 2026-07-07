@@ -1,6 +1,6 @@
 ﻿namespace CatalogAPI.Products.GetProduct
 {
-    public record GetProductResponse(IEnumerable<Product> Products);
+    public record GetProductResponse(IEnumerable<Product> Product);
     public class GetProductsEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
