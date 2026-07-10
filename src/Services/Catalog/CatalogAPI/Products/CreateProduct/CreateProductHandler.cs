@@ -1,6 +1,7 @@
 ﻿
 
 using FluentValidation;
+using JasperFx.Events.Daemon;
 
 namespace CatalogAPI.Products.CreateProduct
 {
@@ -21,26 +22,28 @@ namespace CatalogAPI.Products.CreateProduct
     }
 
 
-    public class CreateProductCommandHandler (IDocumentSession session, IValidator<CreateProductCommand>  validator): ICommandHandler<CreateProductCommand, CreateProductResult>
+    public class CreateProductCommandHandler (IDocumentSession session, ILogger<CreateProductCommandHandler> logger): ICommandHandler<CreateProductCommand, CreateProductResult>
     {
 
-        public async Task<CreateProductResult> Handle(CreateProductCommand commad, CancellationToken cancellationToken)
+        public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
 
-            var result = await validator.ValidateAsync(commad, cancellationToken);
-            var errors = result.Errors.Select(x => x.ErrorMessage).ToList();
-            if(errors.Any())
-            {
-                throw new ValidationException(errors.FirstOrDefault());
-            }
+            //var result = await validator.ValidateAsync(commad, cancellationToken);
+            //var errors = result.Errors.Select(x => x.ErrorMessage).ToList();
+            //if(errors.Any())
+            //{
+            //    throw new ValidationException(errors.FirstOrDefault());
+            //}
 
+
+            logger.LogInformation("CreateProductCommandHandler.Handle called with {Command}", command);
             var product = new Product()
             {
-                Name = commad.Name,
-                Category = commad.Category,
-                Description = commad.Description,
-                ImageFile = commad.ImageFile,
-                Price = commad.Price
+                Name = command.Name,
+                Category = command.Category,
+                Description = command.Description,
+                ImageFile = command.ImageFile,
+                Price = command.Price
             };
 
             session.Store(product);
