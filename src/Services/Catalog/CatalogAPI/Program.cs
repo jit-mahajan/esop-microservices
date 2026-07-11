@@ -1,7 +1,5 @@
 
 
-using CatalogAPI.Data;
-
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
 
@@ -17,7 +15,7 @@ builder.Services.AddCarter();
 
 builder.Services.AddMarten(options =>
 {
-    options.Connection(builder.Configuration.GetConnectionString("Database"));
+    options.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
 
 if(builder.Environment.IsDevelopment())
@@ -28,6 +26,7 @@ if(builder.Environment.IsDevelopment())
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 var app = builder.Build();
 
 app.MapCarter();
@@ -60,5 +59,9 @@ app.MapCarter();
 //});
 
 app.UseExceptionHandler(options => { });
-
+app.UseHealthChecks("/health",
+    new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 app.Run();
