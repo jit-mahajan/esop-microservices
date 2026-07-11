@@ -22,12 +22,12 @@ namespace CatalogAPI.Products.CreateProduct
     }
 
 
-    public class CreateProductCommandHandler (IDocumentSession session, ILogger<CreateProductCommandHandler> logger): ICommandHandler<CreateProductCommand, CreateProductResult>
+    public class CreateProductCommandHandler (IDocumentSession session)  //, ILogger<CreateProductCommandHandler> logger): ICommandHandler<CreateProductCommand, CreateProductResult>
     {
 
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
-
+            //Handle Validation in buildingBlocks in Behavior pipeline, so no need to validate here
             //var result = await validator.ValidateAsync(commad, cancellationToken);
             //var errors = result.Errors.Select(x => x.ErrorMessage).ToList();
             //if(errors.Any())
@@ -36,7 +36,8 @@ namespace CatalogAPI.Products.CreateProduct
             //}
 
 
-            logger.LogInformation("CreateProductCommandHandler.Handle called with {Command}", command);
+            //Hadle logging in buildingBlocks in Behavior pipeline, so no need to log here(MediatR Pipeline)
+            // logger.LogInformation("CreateProductCommandHandler.Handle called with {Command}", command);
             var product = new Product()
             {
                 Name = command.Name,

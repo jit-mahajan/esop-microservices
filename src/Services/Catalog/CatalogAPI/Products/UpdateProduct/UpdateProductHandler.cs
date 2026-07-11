@@ -21,13 +21,13 @@ namespace CatalogAPI.Products.UpdateProduct
 
         }
     }
-    public class UpdateProductCommandHandler(IDocumentSession session, ILogger<UpdateProductCommandHandler> logger)
+    public class UpdateProductCommandHandler(IDocumentSession session) //, ILogger<UpdateProductCommandHandler> logger)
         : ICommandHandler<UpdateProductCommand, UpdateProductResult>
     {
         public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
         {
 
-            logger.LogInformation("UpdateProductHandler.Handle called with command {Command}", command);
+          //  logger.LogInformation("UpdateProductHandler.Handle called with command {Command}", command);
             var product = await session.LoadAsync<Product>(command.Id, cancellationToken);
 
             if (product == null)

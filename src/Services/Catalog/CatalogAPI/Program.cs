@@ -1,8 +1,6 @@
-using BuildingBlocks.Behaviors;
-using BuildingBlocks.Exceptions.Handler;
-using FluentValidation;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+
+
+using CatalogAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
@@ -11,15 +9,22 @@ builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
     config.AddOpenBehavior(typeof(ValidationBehaviors<,>));
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
-
-builder.Services.AddCarter();
 builder.Services.AddValidatorsFromAssembly(assembly);
+builder.Services.AddCarter();
+
 
 builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("Database"));
 }).UseLightweightSessions();
+
+if(builder.Environment.IsDevelopment())
+{
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
+}
+
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
