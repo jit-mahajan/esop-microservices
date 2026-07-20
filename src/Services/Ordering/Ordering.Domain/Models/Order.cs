@@ -1,5 +1,8 @@
 ﻿
 
+using Ordering.Domain.Events;
+using System.Data;
+
 namespace Ordering.Domain.Models
 {
     public class Order : Aggregate<OrderId>
@@ -22,6 +25,53 @@ namespace Ordering.Domain.Models
             get => OrderItems.Sum(x => x.Price * x.Quantity);
             private set { }
         }
-    
+
+        public static Order Create(OrderId id, CustomerId customerId, OrderName orderName, Address shippingAddress, Address billingAddress, Payment payment)
+        {
+            var order = new Order
+            {
+                Id = id,
+                CustomerId = customerId,
+                OrderName = orderName,
+                ShippingAddress = shippingAddress,
+                BillingAddress = billingAddress,
+                Payment = payment,
+                Status = OrderStatus.Pending
+            };
+
+            order.AddDomainEvents(new OrderCreatedEvent(order));
+            return order;
+        }
+
+        public void  Update(OrderId id, CustomerId customerId, OrderName orderName, Address shippingAddress, Address billingAddress, Payment payment, OrderStatus status)
+        {
+            OrderName = orderName;
+            ShippingAddress = shippingAddress;
+            BillingAddress = billingAddress;
+            Payment = payment;
+            Status = status;
+
+            AddDomainEvents(new OrderUpdateEvent(this));
+        }
+
+        public void Add(ProductId productId, int qunantity, decimal price)
+        {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(qunantity);
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+
+            var orderItem = new OrderItem(Id, productId, qunantity, price);
+            _orderItems.Add(orderItem);
+        }
+
+        public void Remove(ProductId productId)
+        {
+            var orderItem = _orderItems.FirstOrDefault(x => x.ProductId == productId);
+            if (orderItem != null)
+            {
+                _orderItems.Remove(orderItem);
+            }
+        }
+
+
     }
 }
