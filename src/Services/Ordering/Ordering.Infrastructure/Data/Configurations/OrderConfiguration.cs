@@ -115,7 +115,7 @@ namespace Ordering.Infrastructure.Data.Configurations
                    paymentBuilder.Property(p => p.CardName)
                    .HasMaxLength(50);
 
-                   paymentBuilder.Property(p => p.CardNumbar)
+                   paymentBuilder.Property(p => p.CardNumber)
                    .HasMaxLength(24)
                    .IsRequired();
 
