@@ -30,7 +30,7 @@ namespace Ordering.Application.Orders.Commands.CreateOrder
                 orderName: OrderName.Of(orderDto.OrderName),
                 shippingAddress: shippingAddress,
                 billingAddress: billingAddress,
-                payment: Payment.Of(orderDto.Payment.CardName, orderDto.Payment.CardNumber, orderDto.Payment.Cvv, orderDto.Payment.Expiration, orderDto.Payment.PaymentMethod)
+                payment: Payment.Of(orderDto.Payment.CardName, orderDto.Payment.CardNumber, orderDto.Payment.Expiration, orderDto.Payment.Cvv, orderDto.Payment.PaymentMethod)
 
                 );
 

@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Ordering.Infrastructure.Data.Migrations
+namespace Ordering.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,7 +63,7 @@ namespace Ordering.Infrastructure.Data.Migrations
                     OrderName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Payment_CVV = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Payment_CardName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Payment_CardNumbar = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
+                    Payment_CardNumber = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
                     Payment_Expiration = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Payment_PaymentMethod = table.Column<int>(type: "int", nullable: false),
                     ShippingAddress_AddressLine = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),

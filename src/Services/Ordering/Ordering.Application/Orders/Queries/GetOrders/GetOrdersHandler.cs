@@ -6,13 +6,13 @@ namespace Ordering.Application.Orders.Queries.GetOrders
         public async Task<GetOrdersResult> Handle(GetOrdersQuery query, CancellationToken cancellationToken)
         {
             var pageIndex = query.PaginationRequest.PageIndex;
-            var pageSize = query.PaginationRequest.PageSie;
+            var pageSize = query.PaginationRequest.PageSize;
 
             var totalCount = await dbContext.Orders.LongCountAsync(cancellationToken);
 
             var orders = await dbContext.Orders
                 .Include(o => o.OrderItems)
-                .OrderBy(o => o.OrderName)
+                .OrderBy(o => o.OrderName.Value)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
