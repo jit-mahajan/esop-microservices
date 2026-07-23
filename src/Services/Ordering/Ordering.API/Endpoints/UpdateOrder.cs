@@ -22,7 +22,7 @@ namespace Ordering.API.Endpoints
             }
             )
             .WithName("UpdateOrder")
-            .Produces<CreateOrderResponse>(StatusCodes.Status201Created)
+            .Produces<CreateOrderResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .WithSummary("Update Order")
             .WithDescription("Update Order");
